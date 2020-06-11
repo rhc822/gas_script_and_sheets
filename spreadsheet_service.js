@@ -35,3 +35,21 @@ function getData(){
 ]
 
 */
+
+
+// get data out more directly
+function getData2(){
+
+  const sheet = SpreadsheetApp.getActiveSheet();
+  Logger.log(sheet.getDataRange().getValues());
+
+}
+
+// get sheet by name
+function getData3(){
+
+  const ss = SpreadsheetApp.getActiveSheet();
+  const sheet1 = ss.getSheetName("Sheet1");
+  Logger.log(sheet1.getDataRange().getValues());
+
+}
