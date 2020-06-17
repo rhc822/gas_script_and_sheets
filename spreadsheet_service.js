@@ -142,16 +142,62 @@ function calculateRowTotal() {
   });
 
 }
+
+
+
+/*************************************************************************************/
+
+
+// add total for each row to Google Sheet
+
+function addRowTotal() {
+
+  var ss = SpreadsheetApp.getActive();
+  var sheet1 = ss.getSheetByName("Sheet1");
+  var lastRow = sheet1.getLastRow();
   
+  var data = sheet1.getRange(2, 1, lastRow - 1, 3).getValues();
 
+  Logger.log(data); 
+  
+  /**
+  
+  [
+    [Apple, 0.86, 4.0],
+    [Banana, 0.82, 2.0],
+    [Pear, 0.52, 7.0],
+    [Watermelon, 1.74, 2.0],
+    [Kiwi, 0.99, 3.0],
+    [Strawberry, 0.4, 25.0]
+  ]
+  
+  */
+  
+  var totalsArray = [];
+  
+  data.forEach(function(row) {
 
+    var name = row[0];
+    var cost = row[1];
+    var quantity = row[2];
 
+    var total = cost * quantity;
+    
+    row.push(total);
+    
+    totalsArray.push([total]);
 
+    Logger.log(row);
 
+  });
 
+  Logger.log(totalsArray);
+  
+  // paste data back into sheet
+  
+  sheet1.getRange(2, 4, lastRow - 1, 1).setValues(totalsArray);
 
-
-
+}
 
 
 
