@@ -210,9 +210,46 @@ function onOpen() {
   
   ui.createMenu("Custom Menu")
     .addItem("Add Row Totals", "addRowTotals")
+    .addItem("Add Grand Total", "grandTotal")
     .addToUi();
 
 }
+
+
+/**********************************************************************************/
+
+
+//add grand total row
+
+function grandTotal(){
+
+  var ss = SpreadsheetApp.getActive();
+  var sheet1 = ss.getSheetByName("Sheet1");
+  var lastRow = sheet1.getLastRow();
+  var lastColumn = sheet1.getLastColumn();
+  
+  sheet1.getRange(lastRow + 1, 1).setValue("Total");
+  sheet1.getRange(lastRow + 1, 2).setFormula("=sum(D2:D8)");
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
