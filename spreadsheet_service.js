@@ -150,7 +150,7 @@ function calculateRowTotal() {
 
 // add total for each row to Google Sheet
 
-function addRowTotal() {
+function addRowTotals() {
 
   var ss = SpreadsheetApp.getActive();
   var sheet1 = ss.getSheetByName("Sheet1");
@@ -198,6 +198,30 @@ function addRowTotal() {
   sheet1.getRange(2, 4, lastRow - 1, 1).setValues(totalsArray);
 
 }
+
+
+/**********************************************************************************/
+
+//add a custom menu
+
+function onOpen() {
+
+  var ui = SpreadsheetApp.getUi();
+  
+  ui.createMenu("Custom Menu")
+    .addItem("Add Row Totals", "addRowTotals")
+    .addToUi();
+
+}
+
+
+
+
+
+
+
+
+
 
 
 
