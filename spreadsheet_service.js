@@ -211,6 +211,8 @@ function onOpen() {
   ui.createMenu("Custom Menu")
     .addItem("Add Row Totals", "addRowTotals")
     .addItem("Add Grand Total", "grandTotal")
+    .addItem("Format Table", "formatTable")
+    .addItem("Add Chart", "addChart")  
     .addToUi();
 
 }
@@ -229,17 +231,80 @@ function grandTotal(){
   var lastColumn = sheet1.getLastColumn();
   
   sheet1.getRange(lastRow + 1, 1).setValue("Total");
-  sheet1.getRange(lastRow + 1, 2).setFormula("=sum(D2:D8)");
+  sheet1.getRange(lastRow + 1, lastColumn).setFormula("=sum(D2:D" + lastRow + ")");
 
 }
 
 
 
+/**********************************************************************************/
 
 
+//format table
+
+function formatTable(){
+
+  var ss = SpreadsheetApp.getActive();
+  var sheet1 = ss.getSheetByName("Sheet1");
+  var lastRow = sheet1.getLastRow();
+  var lastColumn = sheet1.getLastColumn();
+  var dataRange = sheet1.getDataRange();
+  
+  //apply orange banding, add header or footer
+  dataRange.applyRowBanding(SpreadsheetApp.BandingTheme.ORANGE, true, true);
+  
+  //format the last column as $
+  sheet1.getRange(2, lastColumn, lastRow - 1, 1).setNumberFormat("$0.00");
+  
+  //make the row total bold
+  sheet1.getRange(lastRow, 1, 1, lastColumn).setFontWeight("bold");
+
+}
 
 
+//Add a chart!!
 
+function addChart(){
+
+  var ss = SpreadsheetApp.getActive();
+  var sheet1 = ss.getSheetByName("Sheet1");
+  var lastRow = sheet1.getLastRow();
+  var lastColumn = sheet1.getLastColumn();
+  
+  var totalChartLabels = sheet1.getRange(1, 1, lastRow - 1, 1);
+  var totalChartValues = sheet1.getRange(1, lastColumn, lastRow - 1, 1);
+  
+  var totalsChart = sheet1.newChart()
+    .setChartType(Charts.ChartType.BAR)
+    .addRange(totalChartLabels)
+    .addRange(totalChartValues)
+    .setMergeStrategy(Charts.ChartMergeStrategy.MERGE_COLUMNS)
+    .setPosition(1, 5, 0, 0)
+    .setOption("title", "Total Fruit Chart")
+    .setNumHeaders(1)
+    .build();
+  
+  sheet1.insertChart(totalsChart);
+  
+  
+  
+  
+/*  var dataRange = sheet1.getRange("A1:B9");
+  
+  Logger.log(dataRange.getValues());
+  
+  var myNewChart = sheet1.newChart();
+  
+  myNewChart.addRange(dataRange)
+    .setChartType(Charts.ChartType.BAR)
+    .setPosition(1, 5, 0, 0)
+    .setNumHeaders(1)
+    .setOption("title", "Fruit Chart");
+  
+  sheet1.insertChart(myNewChart.build());
+*/
+
+}
 
 
 
